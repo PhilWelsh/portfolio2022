@@ -40,7 +40,7 @@ const ResumeButton = () => {
   }, [hover]);
   return (
     <a
-      href="https://res.cloudinary.com/philwelsh/image/upload/v1608678507/philwelsh.com/philwelsh-cv-2020.pdf"
+      href="https://res.cloudinary.com/philwelsh/image/upload/v1644415143/philwelsh.com/philwelsh-cv-2022_f28lfx.pdf"
       className={styles.button}
       style={{ display: "inline-flex", overflow: "hidden" }}
       onMouseEnter={() => setHover(true)}
