@@ -1,6 +1,49 @@
+import React, { Fragment } from "react";
 import Image from "next/image";
 import styles from "../styles/Home.module.scss";
 import { GrLinkNext } from "react-icons/gr";
+import { useSpring, animated, config } from "react-spring";
+import { useState, useEffect } from "react";
+
+const CheckItOutButton = ({ link }) => {
+  const [hover, setHover] = useState(false);
+  const style = hover
+    ? useSpring({
+        loop: false,
+        from: { transform: "translateX(0px)" },
+        to: { transform: "translateX(-5px)" },
+        config: { ...config.wobbly },
+      })
+    : useSpring({
+        loop: false,
+        from: { transform: "translateX(0px)" },
+        to: { transform: "translateX(5px)" },
+        config: { ...config.wobbly },
+      });
+
+  useEffect(() => {
+    if (!hover) {
+      return;
+    }
+    window.setTimeout(() => {
+      setHover(false);
+    }, 200);
+  }, [hover]);
+  return (
+    <a
+      href={link}
+      target="_blank"
+      className={styles.button}
+      style={{ display: "inline-flex", overflow: "hidden" }}
+      onMouseEnter={() => setHover(true)}
+    >
+      <span>Check it out!</span>
+      <animated.div style={{ display: "inline-block", ...style }}>
+        <GrLinkNext />
+      </animated.div>
+    </a>
+  );
+};
 
 const portfolioPieces = [
   // { needs improving. (no pictures. bad styling.)
@@ -13,12 +56,23 @@ const portfolioPieces = [
   // },
   {
     title: "Mandarin Study Cards",
-    techUsed: ["React", "Redux", "Recoil", "Python"],
-    description:
-      "As a learner of Mandarin Chinese, I developed a way to separate the characters I needed to learn into groups based on commonality and test level. Using python to scrape and compile data from several sources. The cards can be modified, flipped and chunked into groups depending on the user's preference. A test mode is being built and currently styles and functionality is all filling base paramaters",
+    techUsed: ["HTML", "JS", "React", "Redux", "Python", "JSS"],
+    description: (
+      <>
+        As a learner of Mandarin Chinese, I developed a way to separate the
+        characters I needed to learn into groups based on commonality and test
+        level.
+        <br />
+        <br />
+        Used python to scrape and compile data from several sources. Cards and
+        test groups can be modified at the user's preference.
+        <br />
+        In development.
+      </>
+    ),
     link: "https://mandarin-char-test-game.vercel.app/",
     imageSrc:
-      "https://res.cloudinary.com/philwelsh/image/upload/v1644190395/philwelsh.com/MandarinGameCapture_rpidkf.png",
+      "https://res.cloudinary.com/philwelsh/image/upload/v1644348013/philwelsh.com/site-images/MandarinGameCapture_wksjox.png",
   },
   // { needs fixing, minor styles. bug fix, can't search
   //   title: "Food finder app",
@@ -35,7 +89,7 @@ const portfolioPieces = [
       "XD",
       "Illustrator",
       "HTML",
-      "CSS",
+      "JSS",
       "JS",
       "React",
       "Redux",
@@ -49,15 +103,16 @@ const portfolioPieces = [
       "As part of the company, designed, sourced and altered images for, created wireframes, mockups, built, deployed and improved using A/B testing and Google Analytics",
     link: "https://www.controlgap.com",
     imageSrc:
-      "https://res.cloudinary.com/philwelsh/image/upload/v1602948667/philwelsh.com/site-images/site-controlgap_wv0mml.jpg",
+      "https://res.cloudinary.com/philwelsh/image/upload/v1644348133/philwelsh.com/site-images/CGCapture_lxkpf5.png",
   },
   {
     title: "Mecca Bingo",
-    techUsed: ["HTML", "CSS", "JS", "OrchardCMS"],
-    description: "Work in team for big client",
+    techUsed: ["HTML", "SCSS", "JS", "OrchardCMS"],
+    description:
+      "As part of a large international team for a big client. Revised changes for and built new features for website as well as configuring CMS",
     link: "https://www.meccabingo.com/",
     imageSrc:
-      "https://res.cloudinary.com/philwelsh/image/upload/v1602948667/philwelsh.com/site-images/site-mecca_r102as.jpg",
+      "https://res.cloudinary.com/philwelsh/image/upload/v1644347621/philwelsh.com/site-images/MeccaCapture_dj11nn.png",
   },
   {
     title: "Hadrian Technology",
@@ -66,14 +121,15 @@ const portfolioPieces = [
       "Photoshop",
       "Illustrator",
       "HTML",
-      "CSS",
+      "SCSS",
       "JS",
       "DrupalCMS",
     ],
-    description: "Design for local business, industry requirements",
+    description:
+      "One of many sites built for local businesses, consulted, created wireframes, mockups, accomodated revisions before building in HTML, CSS, and JS. Sourced and edited images for home page and attached to CMS.",
     link: "http://www.hadriantechnology.co.uk/",
     imageSrc:
-      "https://res.cloudinary.com/philwelsh/image/upload/v1602948667/philwelsh.com/site-images/site-hadrian_twditv.jpg",
+      "https://res.cloudinary.com/philwelsh/image/upload/v1644347621/philwelsh.com/site-images/HadrianCapture_saeupa.png",
   },
   // { now shopify, very different
   //   title: "Netvue",
@@ -89,7 +145,7 @@ const Portfolio = () => {
     <>
       <h1>Portfolio</h1>
       {portfolioPieces.map((p) => (
-        <>
+        <Fragment key={p.title}>
           <hr />
           <div className={styles.portfolioSection}>
             <div>
@@ -97,23 +153,27 @@ const Portfolio = () => {
               <p>{p.description}</p>
               <div>
                 {p.techUsed.map((t) => (
-                  <span className={styles.tag}>{t}</span>
+                  <span
+                    className={styles.tag}
+                    dangerouslySetInnerHTML={{ __html: t }}
+                  />
                 ))}
               </div>
-              <a href={p.link} target="_blank" className={styles.button}>
-                Check it out!
-                <GrLinkNext />
-              </a>
+              <CheckItOutButton link={p.link} />
             </div>
             <div>
               {p.imageSrc && (
-                <div className={styles.imageContainer}>
+                <a
+                  href={p.link}
+                  target="_blank"
+                  className={styles.imageContainer}
+                >
                   <Image src={p.imageSrc} layout="fill" />
-                </div>
+                </a>
               )}
             </div>
           </div>
-        </>
+        </Fragment>
       ))}
     </>
   );

@@ -1,14 +1,57 @@
 import type { NextPage } from "next";
+import { useEffect, useState } from "react";
+import { useSpring, animated, config } from "react-spring";
 import Head from "next/head";
 import ProfilePic from "../components/ProfilePic";
 import Portfolio from "../components/Portfolio";
 import { FaLinkedinIn } from "react-icons/fa";
 import { HiOutlineDocumentDownload } from "react-icons/hi";
+import { FiMail } from "react-icons/fi";
 
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import styles from "../styles/Home.module.scss";
 import Tiles from "../components/Tiles";
+
+//test for react-spring effects
+const ResumeButton = () => {
+  const [hover, setHover] = useState(false);
+  const style = hover
+    ? useSpring({
+        loop: false,
+        from: { transform: "translateY(0px)" },
+        to: { transform: "translateY(-40px)" },
+        config: { ...config.wobbly },
+      })
+    : useSpring({
+        loop: false,
+        from: { transform: "translateY(-20px)" },
+        to: { transform: "translateY(0px)" },
+        config: { ...config.wobbly },
+      });
+
+  useEffect(() => {
+    if (!hover) {
+      return;
+    }
+    window.setTimeout(() => {
+      setHover(false);
+    }, 200);
+  }, [hover]);
+  return (
+    <a
+      href="https://res.cloudinary.com/philwelsh/image/upload/v1608678507/philwelsh.com/philwelsh-cv-2020.pdf"
+      className={styles.button}
+      style={{ display: "inline-flex", overflow: "hidden" }}
+      onMouseEnter={() => setHover(true)}
+    >
+      <span style={{ paddingTop: "5px" }}>See resume</span>
+      <animated.div style={{ display: "inline-block", ...style }}>
+        <HiOutlineDocumentDownload size={30} />
+      </animated.div>
+    </a>
+  );
+};
 
 const Home: NextPage = () => {
   return (
@@ -31,13 +74,16 @@ const Home: NextPage = () => {
             <h1 className={styles.title}>
               Phil Welsh {/* angle brackets close in */}
             </h1>
+            <ResumeButton />
 
             {/* if answer contains positive array words, respond happily */}
             <p className={styles.description}>
-              Hi, I'm a web developer living in Toronto. Though I have a range
-              of skills, most of what i do is in the front end, working in
-              React, Typescript and UI development. <br />
+              Hi, I'm a web developer living in Toronto.
               <br />
+              Mostly working in Front End and UI Development with React and
+              Typescript.
+            </p>
+            <p>
               With 5+ years experience I have travelled and worked in the UK,
               China and Canada, for a range of different teams and projects.
               {/* In my 5+ years experience as a web designer and developer I have
@@ -54,28 +100,24 @@ const Home: NextPage = () => {
               My hobbies are drawing, studying language (mostly Chinese), working out, and running and cycling when the weather permits. */}
               {/* <code className={styles.code}></code> */}
             </p>
-            <div>
-              <a
-                href="https://res.cloudinary.com/philwelsh/image/upload/v1608678507/philwelsh.com/philwelsh-cv-2020.pdf"
-                className={styles.button}
-                style={{ display: "inline-flex" }}
-              >
-                <span style={{ paddingTop: "5px" }}>See resume</span>
-                <HiOutlineDocumentDownload size={30} />
-              </a>
-            </div>
+            <div></div>
           </div>
           <div>
             <div className={styles.profilePicContainer}>
               <ProfilePic />
-              <div>
-                <a className={styles.tag} href="linkedin">
-                  <FaLinkedinIn />
-                </a>
-                <a className={styles.tag} href="mailto:philwelsh3d@gmail.com">
-                  philwelsh3d@gmail.com
-                </a>
-              </div>
+            </div>
+            <div className={styles.profileLinks}>
+              <a className={styles.profileLink} href="linkedin">
+                <FaLinkedinIn />
+                <span>linkin.com/welshphil</span>
+              </a>
+              <a
+                className={styles.profileLink}
+                href="mailto:philwelsh3d@gmail.com"
+              >
+                <FiMail />
+                <span>philwelsh3d@gmail.com</span>
+              </a>
             </div>
           </div>
         </section>
@@ -88,7 +130,7 @@ const Home: NextPage = () => {
               core strength in UX and front end development using ES6 and React.
               <br />
               <br />I love learning new tools and seeing how they can improve
-              myself, my projects and my Portfolio
+              myself and the projects I'm working on.
               {/* did you know, interactive elements envourage a user to stay on a page resulting in a better ranking web page */}
             </p>
           </div>
