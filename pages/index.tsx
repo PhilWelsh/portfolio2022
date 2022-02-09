@@ -1,6 +1,6 @@
 import type { NextPage } from "next";
-import { useEffect, useState } from "react";
-import { useSpring, animated, config } from "react-spring";
+import React, { useEffect, useState } from "react";
+import { useSpring, useTrail, animated, config } from "react-spring";
 import Head from "next/head";
 import ProfilePic from "../components/ProfilePic";
 import Portfolio from "../components/Portfolio";
@@ -53,7 +53,28 @@ const ResumeButton = () => {
   );
 };
 
+const Trail = ({ open, children }) => {
+  const items = React.Children.toArray(children);
+  const trail = useTrail(items.length, {
+    config: { mass: 5, tension: 2000, friction: 200 },
+    opacity: open ? 1 : 0,
+    x: open ? 0 : 20,
+    height: open ? 110 : 0,
+    from: { opacity: 0, x: 20, height: 0 },
+  });
+  return (
+    <div>
+      {trail.map(({ height, ...style }, index) => (
+        <animated.div key={index} className={styles.trailsText} style={style}>
+          <animated.div style={{ height }}>{items[index]}</animated.div>
+        </animated.div>
+      ))}
+    </div>
+  );
+};
+
 const Home: NextPage = () => {
+  const [open, setOpen] = useState(true);
   return (
     <div className={styles.container}>
       <Head>
@@ -71,36 +92,39 @@ const Home: NextPage = () => {
         <section id="contact" className={styles.section}>
           <div>
             {/* Left Side */}
-            <h1 className={styles.title}>
-              Phil Welsh {/* angle brackets close in */}
-            </h1>
-            <ResumeButton />
+            <Trail open={open}>
+              <h1 className={styles.title}>
+                Phil Welsh {/* angle brackets close in */}
+              </h1>
 
-            {/* if answer contains positive array words, respond happily */}
-            <p className={styles.description}>
-              Hi, I'm a web developer living in Toronto.
-              <br />
-              Mostly working in Front End and UI Development with React and
-              Typescript.
-            </p>
-            <p>
-              With 5+ years experience I have travelled and worked in the UK,
-              China and Canada, for a range of different teams and projects.
-              {/* In my 5+ years experience as a web designer and developer I have
+              {/* if answer contains positive array words, respond happily */}
+              <p className={styles.description}>
+                Hi, I'm a web developer living in Toronto.
+                <br />
+                Mostly working in Front End and UI Development with React and
+                Typescript.
+              </p>
+              <p>
+                With 5+ years experience I have travelled and worked in the UK,
+                China and Canada, for a range of different teams and projects.
+                {/* In my 5+ years experience as a web designer and developer I have
               travelled and worked in the UK, China and now in Toronto, Canada
               as a permanent resident
               <br />
               <br />I have worked with great teams to produce interesting
               projects that have challenged me to grow and learn a range of
               skills */}
-              {/* read more button as elipsis before skills */}
-              {/* <br /> An education in art and animation with
+                {/* read more button as elipsis before skills */}
+                {/* <br /> An education in art and animation with
               5+ years experience in web design and development. */}
-              {/* I enjoy travel, art, design, development, learning/studying and self improvement.
+                {/* I enjoy travel, art, design, development, learning/studying and self improvement.
               My hobbies are drawing, studying language (mostly Chinese), working out, and running and cycling when the weather permits. */}
-              {/* <code className={styles.code}></code> */}
-            </p>
-            <div></div>
+                {/* <code className={styles.code}></code> */}
+              </p>
+              <div>
+                <ResumeButton />
+              </div>
+            </Trail>
           </div>
           <div>
             <div className={styles.profilePicContainer}>
