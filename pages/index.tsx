@@ -56,7 +56,7 @@ const ResumeButton = () => {
 const Trail = ({ open, children }) => {
   const items = React.Children.toArray(children);
   const trail = useTrail(items.length, {
-    config: { mass: 5, tension: 2000, friction: 200 },
+    config: { mass: 5, tension: 500, friction: 200 },
     opacity: open ? 1 : 0,
     x: open ? 0 : 20,
     height: open ? 110 : 0,
@@ -92,12 +92,8 @@ const Home: NextPage = () => {
         <section id="contact" className={styles.section}>
           <div>
             {/* Left Side */}
+            <h1 className={styles.title}>Phil Welsh</h1>
             <Trail open={open}>
-              <h1 className={styles.title}>
-                Phil Welsh {/* angle brackets close in */}
-              </h1>
-
-              {/* if answer contains positive array words, respond happily */}
               <p className={styles.description}>
                 Hi, I'm a web developer living in Toronto.
                 <br />
@@ -107,19 +103,6 @@ const Home: NextPage = () => {
               <p>
                 With 5+ years experience I have travelled and worked in the UK,
                 China and Canada, for a range of different teams and projects.
-                {/* In my 5+ years experience as a web designer and developer I have
-              travelled and worked in the UK, China and now in Toronto, Canada
-              as a permanent resident
-              <br />
-              <br />I have worked with great teams to produce interesting
-              projects that have challenged me to grow and learn a range of
-              skills */}
-                {/* read more button as elipsis before skills */}
-                {/* <br /> An education in art and animation with
-              5+ years experience in web design and development. */}
-                {/* I enjoy travel, art, design, development, learning/studying and self improvement.
-              My hobbies are drawing, studying language (mostly Chinese), working out, and running and cycling when the weather permits. */}
-                {/* <code className={styles.code}></code> */}
               </p>
               <div>
                 <ResumeButton />

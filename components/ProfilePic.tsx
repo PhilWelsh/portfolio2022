@@ -8,6 +8,7 @@ const ProfilePic = () => {
     from: { rotateZ: -80, height: 0, width: 0 },
     to: { rotateZ: 0, height: 300, width: 300 },
     config: { ...config.gentle },
+    delay: 300,
   });
   // const ProfileImg = () => (
   //   <Image
